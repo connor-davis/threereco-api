@@ -3,6 +3,8 @@ let router = Router();
 
 let authenticationRoutes = require('./authentication');
 let usersRoutes = require('./users');
+let connectionsRoutes = require('./connections');
+const passport = require('passport');
 
 /**
  * @openapi
@@ -21,9 +23,20 @@ let usersRoutes = require('./users');
  *     description: Api authentication routes.
  *   - name: Users
  *     description: Api users routes.
+ *   - name: Connections
+ *     description: Api connections routes.
  */
 
 router.use('/auth', authenticationRoutes);
-router.use('/users', usersRoutes);
+router.use(
+  '/users',
+  passport.authenticate('jwt', { session: false }),
+  usersRoutes
+);
+router.use(
+  '/connections',
+  passport.authenticate('jwt', { session: false }),
+  connectionsRoutes
+);
 
 module.exports = router;

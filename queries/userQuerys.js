@@ -11,6 +11,7 @@ module.exports = {
    * @param {Object} data ```js
    * { email: 'test@test' } or { id: '12345abcdef' }
    * ```
+   * 
    * @returns {Object}
    */
   GET_USER: (data) => {
@@ -23,8 +24,10 @@ module.exports = {
   },
   /**
    * @param {Object} data
+   * 
    * @param data.email The users email
    * @param data.password The users password
+   * 
    * @returns {Object}
    */
   CREATE_USER: (data) => {
@@ -35,7 +38,9 @@ module.exports = {
   },
   /**
    * @param {Object} data Data that needs to be added or updated to a user
+   * 
    * @param data.email This value has to be passed
+   * 
    * @returns {Object}
    */
   UPDATE_USER: (data) => {

@@ -1,6 +1,6 @@
 let { Router } = require('express');
-const { GET_USERS } = require('../../queries/userQuerys');
-const { readTransaction } = require('../../utils/neo4j');
+let { GET_USERS } = require('../../queries/userQuerys');
+let { readTransaction } = require('../../utils/neo4j');
 let router = Router();
 
 /**
