@@ -1,7 +1,7 @@
 let Strategy = require('passport-jwt').Strategy,
   ExtractJwt = require('passport-jwt').ExtractJwt;
 let fs = require('fs');
-let { GET_USER } = require('../queries/userQueryies');
+let { GET_USER } = require('../queries/userQuerys');
 let { readTransaction } = require('../utils/neo4j');
 
 let pubKey = fs.readFileSync('certs/publicKey.pem', {

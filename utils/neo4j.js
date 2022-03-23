@@ -15,7 +15,7 @@ let writeTransaction = async (query, callback) => {
 
   try {
     let result = await session.writeTransaction((tx) =>
-      tx.run(query.statement, query.data)
+      query.data ? tx.run(query.statement, query.data) : tx.run(query.statement)
     );
 
     callback(null, result);
@@ -31,7 +31,9 @@ let readTransaction = async (query, callback) => {
   });
 
   try {
-    let result = await session.readTransaction((tx) => tx.run(query.statement, query.data));
+    let result = await session.readTransaction((tx) =>
+      tx.run(query.statement, query.data)
+    );
 
     callback(null, result);
   } catch (error) {

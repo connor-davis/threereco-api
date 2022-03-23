@@ -19,7 +19,7 @@ let session = require('express-session');
 let swaggerJsdoc = require('swagger-jsdoc');
 let swaggerUi = require('swagger-ui-express');
 let { readTransaction } = require('./utils/neo4j');
-let { GET_USER } = require('./queries/userQueryies');
+let { GET_USER } = require('./queries/userQuerys');
 let io = require('socket.io')(http);
 let apiRoutes = require('./api');
 

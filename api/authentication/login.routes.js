@@ -3,8 +3,8 @@ let router = Router();
 let bcrypt = require('bcrypt');
 let jwt = require('jsonwebtoken');
 let fs = require('fs');
-let { readTransaction } = require('../../utils/neo4j');
-let { GET_USER } = require('../../queries/userQuerys');
+let { readTransaction, writeTransaction } = require('../../utils/neo4j');
+let { GET_USER, UPDATE_USER } = require('../../queries/userQuerys');
 
 /**
  * @openapi
@@ -43,6 +43,7 @@ router.post('/', async (request, response) => {
       let data = {
         id: record.get(0),
         email: record.get(1),
+        lastLogin: record.get(3),
       };
 
       if (bcrypt.compareSync(body.password, password)) {
@@ -55,13 +56,24 @@ router.post('/', async (request, response) => {
           { expiresIn: '1d', algorithm: 'RS256' }
         );
 
-        return response.status(200).json({
-          message: 'Successfully logged in.',
-          data: {
-            ...data,
-            authenticationToken: token,
-          },
-        });
+        writeTransaction(
+          UPDATE_USER({ email: data.email, lastLogin: Date.now() }),
+          (error, _) => {
+            if (error)
+              return response.status(500).json({
+                message: 'Error while checking if passwords match.',
+                error,
+              });
+            else
+              return response.status(200).json({
+                message: 'Successfully logged in.',
+                data: {
+                  ...data,
+                  authenticationToken: token,
+                },
+              });
+          }
+        );
       } else
         return response
           .status(200)
