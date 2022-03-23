@@ -4,7 +4,7 @@ let bcrypt = require('bcrypt');
 let jwt = require('jsonwebtoken');
 let fs = require('fs');
 let { readTransaction } = require('../../utils/neo4j');
-let { GET_USER } = require('../../queries/userQueryies');
+let { GET_USER } = require('../../queries/userQuerys');
 
 /**
  * @openapi
