@@ -6,7 +6,7 @@ let bcrypt = require('bcrypt');
 let jwt = require('jsonwebtoken');
 let fs = require('fs');
 let { writeTransaction, readTransaction } = require('../../utils/neo4j');
-let { REGISTER_USER, IS_EMAIL_TAKEN } = require('../../queries/userQueryies');
+let { REGISTER_USER, GET_USER } = require('../../queries/userQueryies');
 
 /**
  * @openapi
@@ -49,34 +49,20 @@ router.post('/', async (request, response) => {
     { expiresIn: '1d', algorithm: 'RS256' }
   );
 
-  readTransaction(IS_EMAIL_TAKEN(data.email), (error, result) => {
-    if (error) {
+  writeTransaction(REGISTER_USER(data), (error, result) => {
+    if (error)
       return response
         .status(500)
-        .json({ message: 'Error while checking if email is used.', error });}
-    else {
-      if (result.records.length > 0 && result.records[0].get(0))
-        return response.status(200).json({
-          message: 'The email is already being used.',
-          error: 'email-taken',
-        });
-      else
-        writeTransaction(REGISTER_USER(data), (error, result) => {
-          if (error)
-            return response
-              .status(500)
-              .json({ message: 'Error while registering a new user.', error });
-          else
-            return response.status(200).json({
-              message: 'Successfully registered new user.',
-              data: {
-                ...data,
-                password: undefined,
-                authenticationToken: token,
-              },
-            });
-        });
-    }
+        .json({ message: 'Error while registering a new user.', error });
+    else
+      return response.status(200).json({
+        message: 'Successfully registered new user.',
+        data: {
+          ...data,
+          password: undefined,
+          authenticationToken: token,
+        },
+      });
   });
 });
 
