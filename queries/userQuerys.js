@@ -27,9 +27,12 @@ module.exports = {
   },
   /**
    * @param {Object} data Data that needs to be added or updated to a user
+   * @param data.email This value has to be passed
    * @returns {Object}
    */
   UPDATE_USER: (data) => {
+    if (!data.email) throw 'Email is undefined for UPDATE_USER';
+
     let email = data.email;
 
     for (let key in data) {
