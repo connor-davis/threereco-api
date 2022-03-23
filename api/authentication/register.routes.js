@@ -1,12 +1,11 @@
 let { Router } = require('express');
 let router = Router();
 let uuid = require('uuid');
-let logger = require('../../utils/logger');
 let bcrypt = require('bcrypt');
 let jwt = require('jsonwebtoken');
 let fs = require('fs');
-let { writeTransaction, readTransaction } = require('../../utils/neo4j');
-let { REGISTER_USER, GET_USER } = require('../../queries/userQueryies');
+let { writeTransaction } = require('../../utils/neo4j');
+let { REGISTER_USER } = require('../../queries/userQueryies');
 
 /**
  * @openapi
