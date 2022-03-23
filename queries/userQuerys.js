@@ -1,5 +1,13 @@
 module.exports = {
   /**
+   * @returns {Object}
+   */
+  GET_USERS: () => {
+    return {
+      statement: `MATCH (n) RETURN n.id, n.email`,
+    };
+  },
+  /**
    * @param {Object} data ```js
    * { email: 'test@test' } or { id: '12345abcdef' }
    * ```
